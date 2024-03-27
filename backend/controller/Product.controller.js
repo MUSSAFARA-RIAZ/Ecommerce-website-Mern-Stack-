@@ -17,7 +17,7 @@ exports.createProduct = catchasyncHandlerfunc(async (req, res, next) => {
 });
 // get all  products
 exports.ProductController = catchasyncHandlerfunc(async (req, res) => {
-  const searchmain = new webfeature(product.find(), req.query).search();
+  const searchmain = new webfeature(product.find(), req.query).search().filter();
   const mainproduct = await searchmain.query; // await the result of the query
 
   console.log("mainnnnnnnnnnnnnnnnnnnn",mainproduct);
@@ -50,7 +50,7 @@ exports.ProductController = catchasyncHandlerfunc(async (req, res) => {
 // });
 exports.getproductDetails = catchasyncHandlerfunc(async (req, res, next) => {
   const mainproduct= await product.find(req.params.id);
-  
+
 
 
 
