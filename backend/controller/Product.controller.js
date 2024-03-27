@@ -2,7 +2,7 @@ const errorHandler = require("../middleware/error");
 const product = require("../models/Product.models");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchasyncHandlerfunc = require("../middleware/CatchasyncHandler");
-const ApiFeature=require("../utils/APIfeature")
+const webfeature=require("../utils/APIfeature")
 
 
 
@@ -17,33 +17,54 @@ exports.createProduct = catchasyncHandlerfunc(async (req, res, next) => {
 });
 // get all  products
 exports.ProductController = catchasyncHandlerfunc(async (req, res) => {
-  const products = await product.find();
+  const searchmain = new webfeature(product.find(), req.query).search();
+  const mainproduct = await searchmain.query; // await the result of the query
+
+  console.log("mainnnnnnnnnnnnnnnnnnnn",mainproduct);
+ 
   res.status(200).json({
     success: true,
-    products,
+    mainproduct,
   });
 });
 // get particular product details
 
+// exports.getproductDetails = catchasyncHandlerfunc(async (req, res, next) => {
+//   const searchmain=new webfeature(product.find(),req.query).search();
+//   const mainproduct=await searchmain.query;
+//   console.log(mainproduct)
+
+
+
+//   // const mainproduct = await product.findById(req.params.id);
+
+//   if (!mainproduct) {
+//     return next(new ErrorHandler("Product not found", 404));
+//   } else {
+//     res.status(200).json({
+//       success: true,
+//       message: "Product found",
+//       mainproduct,
+//     });
+//   }
+// });
 exports.getproductDetails = catchasyncHandlerfunc(async (req, res, next) => {
-  const searchmain=new ApiFeature(product.find(),req.query).search();
-  const mainproduct=await searchmain.query;
-  console.log(mainproduct)
+  const mainproduct= await product.find(req.params.id);
+  
 
 
-
-  // const mainproduct = await product.findById(req.params.id);
 
   if (!mainproduct) {
     return next(new ErrorHandler("Product not found", 404));
   } else {
     res.status(200).json({
       success: true,
-      message: "Product found",
+     
       mainproduct,
     });
   }
 });
+
 
 // update product//
 exports.updateProduct = catchasyncHandlerfunc(async (req, res, next) => {

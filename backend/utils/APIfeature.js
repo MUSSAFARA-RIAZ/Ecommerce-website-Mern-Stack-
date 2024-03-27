@@ -1,4 +1,4 @@
-class APIFEATUREPROJECT{
+class APIfeature{
     constructor(query,queryStr){
         this.query = query;
         this.queryStr = queryStr;
@@ -21,4 +21,4 @@ class APIFEATUREPROJECT{
 
 
 }
-module.exports =APIFEATUREPROJECT;
+module.exports = APIfeature;
