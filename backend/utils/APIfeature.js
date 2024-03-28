@@ -24,6 +24,7 @@ class APIfeature{
         const copyquerystr={...this.queryStr}
         const removedfields=["keyword","page","limit"]
         removedfields.forEach(key=>delete copyquerystr[key])
+        console.log(removedfields)
         this.query=this.query.find(copyquerystr)
         return this 
 
