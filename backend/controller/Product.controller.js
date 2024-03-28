@@ -2,9 +2,7 @@ const errorHandler = require("../middleware/error");
 const product = require("../models/Product.models");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchasyncHandlerfunc = require("../middleware/CatchasyncHandler");
-const webfeature=require("../utils/APIfeature")
-
-
+const webfeature = require("../utils/APIfeature");
 
 // create product
 
@@ -17,14 +15,21 @@ exports.createProduct = catchasyncHandlerfunc(async (req, res, next) => {
 });
 // get all  products
 exports.ProductController = catchasyncHandlerfunc(async (req, res) => {
-  const searchmain = new webfeature(product.find(), req.query).search().filter();
+  let resultperpage = 5;
+  const productcount=await product.countDocuments();
+
+  const searchmain = new webfeature(product.find(), req.query)
+    .search()
+    .filter()
+    .pagination(resultperpage);
   const mainproduct = await searchmain.query; // await the result of the query
 
-  console.log("mainnnnnnnnnnnnnnnnnnnn",mainproduct);
- 
+  console.log("mainnnnnnnnnnnnnnnnnnnn", mainproduct);
+
   res.status(200).json({
     success: true,
     mainproduct,
+    productcount
   });
 });
 // get particular product details
@@ -33,8 +38,6 @@ exports.ProductController = catchasyncHandlerfunc(async (req, res) => {
 //   const searchmain=new webfeature(product.find(),req.query).search();
 //   const mainproduct=await searchmain.query;
 //   console.log(mainproduct)
-
-
 
 //   // const mainproduct = await product.findById(req.params.id);
 
@@ -49,22 +52,18 @@ exports.ProductController = catchasyncHandlerfunc(async (req, res) => {
 //   }
 // });
 exports.getproductDetails = catchasyncHandlerfunc(async (req, res, next) => {
-  const mainproduct= await product.find(req.params.id);
-
-
-
+  const mainproduct = await product.find(req.params.id);
 
   if (!mainproduct) {
     return next(new ErrorHandler("Product not found", 404));
   } else {
     res.status(200).json({
       success: true,
-     
+
       mainproduct,
     });
   }
 });
-
 
 // update product//
 exports.updateProduct = catchasyncHandlerfunc(async (req, res, next) => {

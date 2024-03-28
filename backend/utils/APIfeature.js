@@ -24,13 +24,30 @@ class APIfeature{
         const copyquerystr={...this.queryStr}
         const removedfields=["keyword","page","limit"]
         removedfields.forEach(key=>delete copyquerystr[key])
-        console.log(removedfields)
-        this.query=this.query.find(copyquerystr)
+     
+        let querystr=JSON.stringify(copyquerystr)
+        querystr=querystr.replace(/\b(gt|gte|lt|lte)\b/g,match=>`$${match}`)
+       
+        this.query=this.query.find(JSON.parse(querystr))
+        console.log(querystr)
+
+        // copyquerystr=JSON.parse(querystr)
+        // console.log(copyquerystr)
+
+
+        // this.query=this.query.find(copyquerystr)
         return this 
 
 
 
 
+    }
+    pagination(resultperpage){
+        const currentpage = Number(this.queryStr.page) || 1
+     //   const resultperpage = Number(this.queryStr.limit) || 5
+        const skip = (currentpage-1)*resultperpage
+        this.query=this.query.limit(resultperpage).skip(skip)
+        return this
     }
    
 
