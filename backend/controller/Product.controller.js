@@ -7,6 +7,8 @@ const webfeature = require("../utils/APIfeature");
 // create product
 
 exports.createProduct = catchasyncHandlerfunc(async (req, res, next) => {
+
+ req.body.user=req.user._id;
   const products = await product.create(req.body);
   res.status(201).json({
     success: true,

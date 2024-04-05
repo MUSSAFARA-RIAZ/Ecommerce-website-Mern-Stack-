@@ -6,6 +6,10 @@ const sendToken = require("../utils/getjwttoken");
 exports.createUser = catchasyncHandlerfunc(async (req, res, next) => {
   // const newuser=await User.create(req.body);
 
+
+
+
+
   const { name, email, password } = req.body;
   const newuser = await User.create({
     name,
@@ -46,6 +50,8 @@ exports.loginUser = catchasyncHandlerfunc(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid email or password", 401));
   }
+  /// we saved token in cookie not in local storage 
+  
   sendToken(user, 200, res);
 
   // const token=user.jwtwebtoken();
@@ -57,3 +63,14 @@ exports.loginUser = catchasyncHandlerfunc(async (req, res, next) => {
 
   // })
 });
+
+exports.UserLogout=catchasyncHandlerfunc(async(req,res,next)=>{
+  res.cookie("token",null,{
+    expires:new Date(Date.now()),
+    httpOnly:true
+  })
+  res.status(200).json({
+    success:true,
+    message:"Logout successfully"
+  })
+})

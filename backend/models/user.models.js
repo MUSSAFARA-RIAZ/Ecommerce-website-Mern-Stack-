@@ -2,6 +2,8 @@ const mongoose=require("mongoose")
 const validator=require("validator")
 const bcrypt=require("bcrypt")
 const jwt = require('jsonwebtoken')
+// built in 
+const crypto=require("crypto")
 
 const UserSchema=mongoose.Schema({
     name:{
@@ -28,6 +30,7 @@ const UserSchema=mongoose.Schema({
         enum: ["user", "admin"],
         default: "user"
     },
+  
     avatar:{
         
             publicid: {
