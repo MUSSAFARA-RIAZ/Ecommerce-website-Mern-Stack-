@@ -1,4 +1,4 @@
-const errorHandler = require("../middleware/error");
+// const errorHandler = require("../middleware/error");
 const product = require("../models/Product.models");
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchasyncHandlerfunc = require("../middleware/CatchasyncHandler");
